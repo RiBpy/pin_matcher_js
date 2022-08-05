@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pin Generator</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="pin-generator half-width">
+                    <input id="random-out" class="form-control" type="text">
+                    <button  id="pin-generate" class="generate-btn">Generate Pin</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-section half-width">
+                    <input class="form-control" id="output" type="number">
+                    <div class="numbers">
+                        <div class="calc-body">
+                            <div class="calc-button-row">
+                              <div class="button" value="7" onclick="btn('7')">7</div>
+                              <div class="button" value="8" onclick="btn('8')">8</div>
+                              <div class="button" value="9" onclick="btn('9')">9</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" value="4" onclick="btn('4')">4</div>
+                              <div class="button" value="5" onclick="btn('5')">5</div>
+                              <div class="button" value="6" onclick="btn('6')">6</div>
+                            </div>
+                            <div class="calc-button-row">
+                              <div class="button" value="1" onclick="btn('1')">1</div>
+                              <div class="button" value="2" onclick="btn('2')">2</div>
+                              <div class="button" value="3" onclick="btn('3')">3</div>
+                            </div>
+                            <div class="calc-button-row">
+                                <div class="button"  onclick=back()>del</div>
+                                <div class="button" value="0" onclick="btn('0')">0</div>
+                                <div class="button"  onclick=clr()>C</div>
+                            </div>
+                            <div>
+                                <button type="submit" onclick="submitBtn()" id="submit-btn" class="submit-btn">Submit</button>
+                                <p class="action-left"><span class="left-attempt">3</span> try left</p>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="notify-section">
+            <p id="wrong" class="wrong">❌ Pin Didn't Match, Please try again</p>
+            <p  id="right"class="right">✅ Pin Matched... Secret door is opening for you</p>
+        </div>
+        <script>
+
+                //pin generator 
+                let randomOut=document.getElementById("random-out");
+            let generator=document.getElementById("pin-generate");
+           generator.addEventListener("click",function(){
+               randomOut.value+=Math.floor(Math.random()*((9999-999)+1)+999)
+            })
+            document.getElementById("random-out").value='';
+
+            //button section
+            let right=document.getElementById("right");
+            right.style.display="none";
+            let wrong=document.getElementById("wrong");
+            wrong.style.display="none";
+
+            function btn(val){
+                document.getElementById("output").value+=val;
+            }
+            function clr(){
+                document.getElementById("output").value='';
+            }
+            function back(){
+                let allValue=document.getElementById("output").value;
+                document.getElementById("output").value=allValue.substr(0,allValue.length-1);
+            }
+        //submit section
+      function submitBtn(){
+        let pin=document.getElementById("output").value;
+        let randomOut=document.getElementById("random-out").value;
+        if(pin==randomOut){
+            right.style.display="block";    //display right
+            wrong.style.display="none";     //hide wrong    
+              }else{
+            wrong.style.display="block";    //display wrong 
+            right.style.display="none"; 
+            left();
+            }
+         }
+         //left attempt section
+         function left(){
+            let left=document.getElementsByClassName("left-attempt")[0];
+            let leftVal=parseInt(left.innerHTML);
+            left.innerHTML=leftVal-1;
+            if(leftVal==1){
+                document.getElementById("submit-btn").disabled=true;
+            }
+         }
+         document.getElementById("output").value='';
+            //left attempt
+           /* let left=document.getElementsByClassName("left-attempt")[0];   //get left attempt
+            let attempt=3;  
+            function inp(){
+                let pin=document.getElementById("output").value;
+                let randomOut=document.getElementById("random-out").value;
+                if(pin==randomOut){
+                    right.style.display="block";    //display right
+                    wrong.style.display="none";     //hide wrong    
+                      }else{
+                    wrong.style.display="block";    //display wrong 
+                    right.style.display="none";     //hide right
+                      }
+                if(pin!=randomOut){
+                    attempt--;
+                    left.innerHTML=attempt;
+                    if(attempt==0){
+                        document.getElementById("submit-btn").disabled=true;
+                    }
+                }
+            }
+   */
+        </script>
+    </div>
+</body>
+</html>
